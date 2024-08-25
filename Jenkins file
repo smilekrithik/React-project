@@ -1,0 +1,38 @@
+pipeline {
+    agent any
+
+    stages {
+        stage('Checkout') {
+            steps {
+                git branch: 'main', url: 'https://github.com/your-username/ecommerce-website.git'
+            }
+        }
+        stage('Build') {
+            steps {
+                sh 'docker build -t your-username/ecommerce-website .'
+            }
+        }
+        stage('Test') {
+            steps {
+                // Add your testing steps here, e.g., run unit tests
+                sh 'npm run test'
+            }
+        }
+        stage('Push to Docker Hub') {
+            steps {
+                withCredentials([string(credentialsId: 'docker-hub-credentials', variable: 'DOCKER_HUB_PASSWORD')]) {
+                    sh 'echo $DOCKER_HUB_PASSWORD | docker login -u your-username --password-stdin'
+                    sh 'docker push your-username/ecommerce-website'
+                }
+            }
+        }
+        stage('Deploy to Kubernetes') {
+            steps {
+                kubernetesDeploy(
+                    configs: 'k8s-deployment.yaml',
+                    kubeconfigId: 'kubeconfig-credentials'
+                )
+            }
+        }
+    }
+}
