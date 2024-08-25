@@ -1,0 +1,17 @@
+ecommerce-website/
+│
+├── public/
+├── src/
+│   ├── components/
+│   │   ├── Header.js
+│   │   ├── ProductList.js
+│   │   └── ProductItem.js
+│   ├── App.js
+│   ├── index.js
+│   └── App.css
+├── .dockerignore
+├── .gitignore
+├── Dockerfile
+├── Jenkinsfile
+├── package.json
+└── README.md
